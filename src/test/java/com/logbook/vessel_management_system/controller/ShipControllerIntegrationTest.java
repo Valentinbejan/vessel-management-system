@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = {
-    "spring.jpa.hibernate.ddl-auto=create-drop",
-    "spring.datasource.url=jdbc:h2:mem:testdb;MODE=PostgreSQL",
-    "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect"
-})
 @Transactional
 @Rollback
 class ShipControllerIntegrationTest {
@@ -57,10 +51,6 @@ class ShipControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        // Clean repositories
-        shipRepository.deleteAll();
-        ownerRepository.deleteAll();
-        
         // Create test data fresh for each test
         testOwner1 = ownerRepository.save(new Owner("Test Owner Alpha"));
         testOwner2 = ownerRepository.save(new Owner("Test Owner Beta"));

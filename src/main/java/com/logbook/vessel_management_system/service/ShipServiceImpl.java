@@ -64,12 +64,6 @@ public class ShipServiceImpl implements ShipService {
         }
 
         Ship savedShip = shipRepository.save(ship);
-        
-        // Save all owners to ensure bidirectional relationship is persisted
-        for (Owner owner : savedShip.getOwners()) {
-            ownerRepository.save(owner);
-        }
-        
         return mapToShipDto(savedShip);
     }
 
@@ -107,11 +101,6 @@ public class ShipServiceImpl implements ShipService {
 
         Ship updatedShip = shipRepository.save(ship);
         
-        // Save all owners to ensure bidirectional relationship is persisted
-        for (Owner owner : updatedShip.getOwners()) {
-            ownerRepository.save(owner);
-        }
-        
         // Fetch again with details for the response DTO
         return mapToShipDto(shipRepository.findByIdWithDetailsAndOwners(updatedShip.getId()).get());
     }
@@ -126,7 +115,6 @@ public class ShipServiceImpl implements ShipService {
         Set<Owner> currentOwners = new HashSet<>(ship.getOwners());
         for (Owner owner : currentOwners) {
             ship.removeOwner(owner);
-            ownerRepository.save(owner);
         }
         
         shipRepository.delete(ship);
