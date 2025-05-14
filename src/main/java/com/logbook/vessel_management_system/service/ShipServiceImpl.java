@@ -55,17 +55,28 @@ public class ShipServiceImpl implements ShipService {
             ship.setDetails(details);
         }
 
-        Set<Owner> owners = findAndValidateOwners(request.getOwnerIds());
-        ship.setOwners(owners); // Let JPA manage the join table by setting on the owning side
+        // Find and add owners using helper method
+        if (request.getOwnerIds() != null && !request.getOwnerIds().isEmpty()) {
+            Set<Owner> owners = findAndValidateOwners(request.getOwnerIds());
+            for (Owner owner : owners) {
+                ship.addOwner(owner);  // Use helper method to manage bidirectional relationship
+            }
+        }
 
         Ship savedShip = shipRepository.save(ship);
+        
+        // Save all owners to ensure bidirectional relationship is persisted
+        for (Owner owner : savedShip.getOwners()) {
+            ownerRepository.save(owner);
+        }
+        
         return mapToShipDto(savedShip);
     }
 
     @Override
     @Transactional
     public ShipDto updateShip(Long shipId, UpdateShipRequest request) {
-        Ship ship = shipRepository.findById(shipId) // Fetch without full details initially
+        Ship ship = shipRepository.findById(shipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ship", "id", shipId));
 
         ship.setShipName(request.getShipName());
@@ -78,20 +89,29 @@ public class ShipServiceImpl implements ShipService {
             }
             details.setShipType(request.getShipType());
             details.setShipTonnage(request.getShipTonnage());
-        } else if (details != null) { // If request details are null, but existing details are not
-            // Decide behavior: remove details or leave as is?
-            // For this example, let's assume null in request means no change or explicit removal is another endpoint.
-            // If you want to remove details if they are null in request:
-            // ship.setDetails(null); // This would cascade delete due to orphanRemoval=true or CascadeType.ALL
         }
 
-
         if (request.getOwnerIds() != null) {
+            // Remove current owners
+            Set<Owner> currentOwners = new HashSet<>(ship.getOwners());
+            for (Owner owner : currentOwners) {
+                ship.removeOwner(owner);
+            }
+            
+            // Add new owners
             Set<Owner> newOwners = findAndValidateOwners(request.getOwnerIds());
-            ship.setOwners(newOwners); // Replace the entire collection
+            for (Owner owner : newOwners) {
+                ship.addOwner(owner);
+            }
         }
 
         Ship updatedShip = shipRepository.save(ship);
+        
+        // Save all owners to ensure bidirectional relationship is persisted
+        for (Owner owner : updatedShip.getOwners()) {
+            ownerRepository.save(owner);
+        }
+        
         // Fetch again with details for the response DTO
         return mapToShipDto(shipRepository.findByIdWithDetailsAndOwners(updatedShip.getId()).get());
     }
@@ -101,7 +121,15 @@ public class ShipServiceImpl implements ShipService {
     public void deleteShip(Long shipId) {
         Ship ship = shipRepository.findById(shipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ship", "id", shipId));
-        shipRepository.delete(ship); // Cascade settings handle join table and details
+                
+        // Remove all owner relationships before deleting the ship
+        Set<Owner> currentOwners = new HashSet<>(ship.getOwners());
+        for (Owner owner : currentOwners) {
+            ship.removeOwner(owner);
+            ownerRepository.save(owner);
+        }
+        
+        shipRepository.delete(ship);
     }
 
     private Set<Owner> findAndValidateOwners(Set<Long> ownerIds) {
@@ -120,7 +148,7 @@ public class ShipServiceImpl implements ShipService {
 
     private ShipDto mapToShipDto(Ship ship) {
         ShipDto dto = new ShipDto();
-        dto.setId(ship.getId()); // Use ship.getId()
+        dto.setId(ship.getId());
         dto.setShipName(ship.getShipName());
         dto.setImoNumber(ship.getImoNumber());
 
