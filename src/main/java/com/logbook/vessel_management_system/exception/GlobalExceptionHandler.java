@@ -1,5 +1,7 @@
+// src/main/java/com/logbook/vessel_management_system/exception/GlobalExceptionHandler.java
 package com.logbook.vessel_management_system.exception;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 @ControllerAdvice
+@Hidden // This excludes the controller advice from OpenAPI documentation
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
