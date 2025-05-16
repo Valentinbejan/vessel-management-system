@@ -1,3 +1,4 @@
+// src/test/java/com/logbook/vessel_management_system/controller/ShipControllerIntegrationTest.java
 package com.logbook.vessel_management_system.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -159,7 +160,7 @@ class ShipControllerIntegrationTest {
     }
 
     @Test
-    void testGetShipDetails_Success() throws Exception {
+    void testGetShipById_Success() throws Exception {
         // Create a ship first
         CreateShipRequest request = new CreateShipRequest();
         request.setShipName("Test Ship Details");
@@ -177,8 +178,8 @@ class ShipControllerIntegrationTest {
         // Extract ship ID from response
         Long shipId = objectMapper.readTree(responseJson).get("id").asLong();
 
-        // Test get ship details
-        mockMvc.perform(get("/api/v1/ships/{shipId}/details", shipId))
+        // Test get ship by ID
+        mockMvc.perform(get("/api/v1/ships/{shipId}", shipId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(shipId.intValue())))
                 .andExpect(jsonPath("$.shipName", is("Test Ship Details")))
@@ -190,9 +191,9 @@ class ShipControllerIntegrationTest {
     }
 
     @Test
-    void testGetShipDetails_NotFound() throws Exception {
+    void testGetShipById_NotFound() throws Exception {
         long nonExistentShipId = 999L;
-        mockMvc.perform(get("/api/v1/ships/{shipId}/details", nonExistentShipId))
+        mockMvc.perform(get("/api/v1/ships/{shipId}", nonExistentShipId))
                 .andExpect(status().isNotFound());
     }
 

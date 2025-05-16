@@ -1,3 +1,4 @@
+// src/main/java/com/logbook/vessel_management_system/service/ShipServiceImpl.java
 package com.logbook.vessel_management_system.service;
 
 import com.logbook.vessel_management_system.dto.CreateShipRequest;
@@ -35,7 +36,7 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     @Transactional(readOnly = true)
-    public ShipDto getShipDetailsById(Long shipId) {
+    public ShipDto getShipById(Long shipId) {
         Ship ship = shipRepository.findByIdWithDetailsAndOwners(shipId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ship", "id", shipId));
         return mapToShipDto(ship);

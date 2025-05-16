@@ -1,3 +1,4 @@
+// src/test/java/com/logbook/vessel_management_system/service/ShipServiceImplTest.java
 package com.logbook.vessel_management_system.service;
 
 import com.logbook.vessel_management_system.dto.CreateShipRequest;
@@ -75,12 +76,12 @@ class ShipServiceImplTest {
     }
 
     @Test
-    void getShipDetailsById_WhenShipExists_ShouldReturnShipDto() {
+    void getShipById_WhenShipExists_ShouldReturnShipDto() {
         // Given
         when(shipRepository.findByIdWithDetailsAndOwners(1L)).thenReturn(Optional.of(testShip));
 
         // When
-        ShipDto result = shipService.getShipDetailsById(1L);
+        ShipDto result = shipService.getShipById(1L);
 
         // Then
         assertThat(result.getId()).isEqualTo(1L);
@@ -93,12 +94,12 @@ class ShipServiceImplTest {
     }
 
     @Test
-    void getShipDetailsById_WhenShipNotFound_ShouldThrowException() {
+    void getShipById_WhenShipNotFound_ShouldThrowException() {
         // Given
         when(shipRepository.findByIdWithDetailsAndOwners(999L)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> shipService.getShipDetailsById(999L))
+        assertThatThrownBy(() -> shipService.getShipById(999L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Ship not found");
         
@@ -183,26 +184,26 @@ class ShipServiceImplTest {
     }
 
     @Test
-void createShip_WithEmptyOwners_ShouldCreateShipWithoutOwners() {
-    // Given
-    CreateShipRequest request = new CreateShipRequest();
-    request.setShipName("Ship Without Owners");
-    request.setImoNumber("7654321");
-    request.setOwnerIds(Set.of());
+    void createShip_WithEmptyOwners_ShouldCreateShipWithoutOwners() {
+        // Given
+        CreateShipRequest request = new CreateShipRequest();
+        request.setShipName("Ship Without Owners");
+        request.setImoNumber("7654321");
+        request.setOwnerIds(Set.of());
 
-    when(shipRepository.findByImoNumber("7654321")).thenReturn(Optional.empty());
-    
-    Ship savedShip = new Ship("Ship Without Owners", "7654321");
-    savedShip.setId(2L);
-    when(shipRepository.save(any(Ship.class))).thenReturn(savedShip);
+        when(shipRepository.findByImoNumber("7654321")).thenReturn(Optional.empty());
+        
+        Ship savedShip = new Ship("Ship Without Owners", "7654321");
+        savedShip.setId(2L);
+        when(shipRepository.save(any(Ship.class))).thenReturn(savedShip);
 
-    // When
-    ShipDto result = shipService.createShip(request);
+        // When
+        ShipDto result = shipService.createShip(request);
 
-    // Then
-    assertThat(result.getOwnerIds()).isEmpty();
-    verify(shipRepository).save(any(Ship.class));
-}
+        // Then
+        assertThat(result.getOwnerIds()).isEmpty();
+        verify(shipRepository).save(any(Ship.class));
+    }
 
     @Test
     void updateShip_WithValidData_ShouldUpdateShip() {
