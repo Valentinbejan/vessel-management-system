@@ -31,7 +31,7 @@ public class ShipController {
 
     @Operation(
         summary = "Get all ships",
-        description = "Retrieves a list of all ships in the system with basic information"
+        description = "Retrieves a list of all ships in the system with complete information including owners and category details"
     )
     @ApiResponses(value = {
         @ApiResponse(
@@ -155,5 +155,33 @@ public class ShipController {
             Long shipId) {
         shipService.deleteShip(shipId);
         return ResponseEntity.noContent().build();
+    }
+
+    // Deprecated endpoint for backward compatibility
+    @Operation(
+        summary = "Get detailed ship information (DEPRECATED)",
+        description = "**DEPRECATED**: Use GET /api/v1/ships/{shipId} instead. This endpoint is kept for backward compatibility.",
+        deprecated = true
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Successfully retrieved ship details",
+            content = @Content(schema = @Schema(implementation = ShipDto.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Ship not found",
+            content = @Content(schema = @Schema(implementation = String.class))
+        )
+    })
+    @GetMapping("/{shipId}/details")
+    @Deprecated
+    public ResponseEntity<ShipDto> getShipDetails(
+            @PathVariable 
+            @Parameter(description = "Unique identifier of the ship", required = true, example = "1")
+            Long shipId) {
+        // Delegate to the standard endpoint
+        return getShipById(shipId);
     }
 }
