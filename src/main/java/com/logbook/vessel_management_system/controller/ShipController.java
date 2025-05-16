@@ -46,6 +46,31 @@ public class ShipController {
     }
 
     @Operation(
+        summary = "Get ship by ID",
+        description = "Retrieves detailed information about a specific ship including category details and associated owners"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Successfully retrieved ship details",
+            content = @Content(schema = @Schema(implementation = ShipDto.class))
+        ),
+        @ApiResponse(
+            responseCode = "404", 
+            description = "Ship not found",
+            content = @Content(schema = @Schema(implementation = String.class))
+        )
+    })
+    @GetMapping("/{shipId}")
+    public ResponseEntity<ShipDto> getShipById(
+            @PathVariable 
+            @Parameter(description = "Unique identifier of the ship", required = true, example = "1")
+            Long shipId) {
+        ShipDto shipDetails = shipService.getShipDetailsById(shipId);
+        return ResponseEntity.ok(shipDetails);
+    }
+
+    @Operation(
         summary = "Create a new ship",
         description = "Creates a new ship with the provided details and associates it with existing owners"
     )
@@ -130,30 +155,5 @@ public class ShipController {
             Long shipId) {
         shipService.deleteShip(shipId);
         return ResponseEntity.noContent().build();
-    }
-
-    @Operation(
-        summary = "Get detailed ship information",
-        description = "Retrieves comprehensive information about a specific ship including category details and associated owners"
-    )
-    @ApiResponses(value = {
-        @ApiResponse(
-            responseCode = "200", 
-            description = "Successfully retrieved ship details",
-            content = @Content(schema = @Schema(implementation = ShipDto.class))
-        ),
-        @ApiResponse(
-            responseCode = "404", 
-            description = "Ship not found",
-            content = @Content(schema = @Schema(implementation = String.class))
-        )
-    })
-    @GetMapping("/{shipId}/details")
-    public ResponseEntity<ShipDto> getShipDetails(
-            @PathVariable 
-            @Parameter(description = "Unique identifier of the ship", required = true, example = "1")
-            Long shipId) {
-        ShipDto shipDetails = shipService.getShipDetailsById(shipId);
-        return ResponseEntity.ok(shipDetails);
     }
 }
