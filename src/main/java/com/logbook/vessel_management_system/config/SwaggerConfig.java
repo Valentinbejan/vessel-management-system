@@ -10,11 +10,21 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * Configuration for Swagger/OpenAPI documentation.
+ */
+
 @Configuration
 public class SwaggerConfig {
 
     @Value("${server.port:8080}")
     private String serverPort;
+
+    /**
+     * Factory Method Pattern: This @Bean method creates and configures an OpenAPI
+     * object that's managed by the Spring container. Spring will invoke this method
+     * to create the bean and inject it where needed.
+     */
 
     @Bean
     public OpenAPI customOpenAPI() {

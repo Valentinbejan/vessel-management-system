@@ -21,6 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for ship management operations.
+ * 
+ * Dependency Injection Pattern: Uses constructor injection via @RequiredArgsConstructor
+ * to inject the ShipService dependency.
+ */
+
 @RestController
 @RequestMapping("/api/v1/ships")
 @RequiredArgsConstructor
@@ -40,6 +47,13 @@ public class ShipController {
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ShipDto.class)))
         )
     })
+
+    /**
+     * Command Pattern: Each controller method acts as a command that encapsulates
+     * a specific operation to be performed. This method encapsulates the command
+     * to retrieve all ships.
+     */
+
     @GetMapping
     public ResponseEntity<List<ShipDto>> getAllShips() {
         return ResponseEntity.ok(shipService.getAllShips());
@@ -91,6 +105,13 @@ public class ShipController {
             content = @Content(schema = @Schema(implementation = String.class))
         )
     })
+
+    /**
+     * Command Pattern: Encapsulates the "create ship" operation as a command.
+     * DTO Pattern: Uses CreateShipRequest as a data transfer object to receive
+     * input data from the client.
+     */
+
     @PostMapping
     public ResponseEntity<ShipDto> createShip(
             @Valid @RequestBody 

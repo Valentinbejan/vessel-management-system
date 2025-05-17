@@ -9,6 +9,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+/**
+ * Entity class representing Ships in the system.
+ * Multiple patterns are applied here:
+ * 1. Domain Model Pattern - Encapsulates data and behavior related to ships
+ * 2. Builder Pattern (via Lombok) - Simplifies object construction
+ * 3. Singleton Pattern (via Spring) - Entity instances managed by JPA
+ */
+
 @Entity
 @Table(name = "Ships_Table") // Matches your SQL table name
 @Getter
@@ -43,16 +51,32 @@ public class Ship {
         this.imoNumber = imoNumber;
     }
 
+    /**
+     * Observer Pattern: These helper methods ensure bidirectional relationship
+     * consistency. When a Ship adds an Owner, it also ensures the Owner
+     * knows about this Ship, propagating changes across the object graph.
+     */
+
     // Helper methods for relationship management
     public void addOwner(Owner owner) {
         this.owners.add(owner);
         owner.getShips().add(this);
     }
 
+    /**
+     * Observer Pattern: Similar to addOwner, this maintains bidirectional
+     * relationship consistency when removing an ownership relationship.
+     */
+
     public void removeOwner(Owner owner) {
         this.owners.remove(owner);
         owner.getShips().remove(this);
     }
+
+    /**
+     * Observer Pattern: Ensures changes to the Ship's details are reflected
+     * in the ShipCategoryDetails entity, maintaining consistency.
+     */
 
     public void setDetails(ShipCategoryDetails details) {
         if (details == null) {

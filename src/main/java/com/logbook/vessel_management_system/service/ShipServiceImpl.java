@@ -19,12 +19,30 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the ShipService interface.
+ * 
+ * Dependency Injection Pattern: Uses constructor injection through Lombok's
+ * @RequiredArgsConstructor, making dependencies explicit and testable.
+ * 
+ * Facade Pattern: Provides a simplified interface to the complex subsystem of
+ * repositories, entities, and their relationships.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ShipServiceImpl implements ShipService {
 
     private final ShipRepository shipRepository;
     private final OwnerRepository ownerRepository;
+
+    /**
+     * Template Method Pattern: Concrete implementation of an abstract operation
+     * defined in the ShipService interface.
+     * 
+     * Transaction Management through Proxy Pattern: The @Transactional annotation
+     * triggers Spring to create a proxy that handles transaction boundaries.
+     */
 
     @Override
     @Transactional(readOnly = true)
@@ -41,6 +59,13 @@ public class ShipServiceImpl implements ShipService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ship", "id", shipId));
         return mapToShipDto(ship);
     }
+
+    /**
+     * Facade Pattern: Hides the complexity of fetching data from repositories
+     * and mapping between entities and DTOs.
+     * 
+     * Proxy Pattern: Transaction management is handled transparently.
+     */
 
     @Override
     @Transactional
@@ -67,6 +92,11 @@ public class ShipServiceImpl implements ShipService {
         Ship savedShip = shipRepository.save(ship);
         return mapToShipDto(savedShip);
     }
+
+     /**
+     * Command Pattern: Method executes a specific operation that changes the state
+     * of the system based on the input request.
+     */
 
     @Override
     @Transactional
@@ -134,6 +164,12 @@ public class ShipServiceImpl implements ShipService {
         }
         return new HashSet<>(foundOwners);
     }
+
+    /**
+     * Adapter Pattern: Helper method that adapts/transforms the Ship entity into
+     * a ShipDto for the presentation layer. This isolates the internal data model
+     * from what's exposed through the API.
+     */
 
     private ShipDto mapToShipDto(Ship ship) {
         ShipDto dto = new ShipDto();

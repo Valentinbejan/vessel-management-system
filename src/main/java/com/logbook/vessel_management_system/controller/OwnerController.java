@@ -18,6 +18,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * REST controller for owner management operations.
+ * 
+ * Dependency Injection Pattern: Uses constructor injection via @RequiredArgsConstructor
+ * to inject the OwnerService dependency.
+ */
+
 @RestController
 @RequestMapping("/api/v1/owners")
 @RequiredArgsConstructor
@@ -37,6 +44,12 @@ public class OwnerController {
             content = @Content(array = @ArraySchema(schema = @Schema(implementation = OwnerDto.class)))
         )
     })
+
+    /**
+     * Command Pattern: Each controller method acts as a command that encapsulates
+     * a specific operation. This method encapsulates the "get all owners" operation.
+     */
+
     @GetMapping
     public ResponseEntity<List<OwnerDto>> getAllOwners() {
         return ResponseEntity.ok(ownerService.getAllOwners());
@@ -58,6 +71,12 @@ public class OwnerController {
             content = @Content(schema = @Schema(implementation = String.class))
         )
     })
+
+    /**
+     * Command Pattern: Encapsulates the "create owner" operation.
+     * DTO Pattern: Uses OwnerDto as both input and output data transfer object.
+     */
+
     @PostMapping
     public ResponseEntity<OwnerDto> createOwner(
             @Valid @RequestBody 

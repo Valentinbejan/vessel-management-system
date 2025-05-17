@@ -15,12 +15,30 @@ import java.util.List;
 import java.util.Set;     // Added import
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the OwnerService interface.
+ * 
+ * Dependency Injection Pattern: Uses constructor injection via @RequiredArgsConstructor
+ * to inject required dependencies, promoting loose coupling.
+ * 
+ * Facade Pattern: Provides a simplified interface for owner management operations,
+ * hiding the complexity of repositories and entity relationships.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerRepository ownerRepository;
     private final ShipRepository shipRepository; // Now used
+
+    /**
+     * Proxy Pattern: The @Transactional annotation triggers Spring to create a proxy
+     * around this method that handles transaction boundaries.
+     * 
+     * Template Method Pattern: Concrete implementation of an abstract operation
+     * defined in the OwnerService interface.
+     */
 
     @Override
     @Transactional(readOnly = true)
@@ -29,6 +47,11 @@ public class OwnerServiceImpl implements OwnerService {
                 .map(this::mapToOwnerDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Command Pattern: Executes a specific operation (creating an owner)
+     * that changes the state of the system.
+     */
 
     @Override
     @Transactional
@@ -41,6 +64,11 @@ public class OwnerServiceImpl implements OwnerService {
         return mapToOwnerDto(savedOwner);
     }
 
+    /**
+     * Facade Pattern: This method hides complex operations involving both
+     * Owner and Ship entities, providing a simple deleteOwner operation
+     * that handles all the internal complexity.
+     */
 
     @Override
     @Transactional
@@ -64,6 +92,11 @@ public class OwnerServiceImpl implements OwnerService {
 
         ownerRepository.delete(owner);
     }
+
+    /**
+     * Adapter Pattern: Transforms/adapts the Owner entity to an OwnerDto
+     * for the presentation layer, keeping entity details internal.
+     */
 
     private OwnerDto mapToOwnerDto(Owner owner) {
         OwnerDto dto = new OwnerDto();

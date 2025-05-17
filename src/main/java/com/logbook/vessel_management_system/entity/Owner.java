@@ -9,6 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+/**
+ * Entity class representing vessel Owners in the system.
+ * Implements Builder Pattern (via Lombok) for simplified object construction.
+ */
+
 @Entity
 @Table(name = "Owner_Table") // Matches your SQL table name
 @Getter
@@ -31,11 +36,23 @@ public class Owner {
         this.ownerName = ownerName;
     }
 
+     /**
+     * Observer Pattern: Helper method that maintains bidirectional relationship
+     * consistency with the Ship entity. When an Owner adds a Ship, it ensures
+     * the Ship knows about this Owner as well.
+     */
+
+
     // Helper methods (optional but good practice)
     public void addShip(Ship ship) {
         this.ships.add(ship);
         ship.getOwners().add(this);
     }
+
+    /**
+     * Observer Pattern: Ensures consistent bidirectional relationship
+     * when removing a ship from this owner.
+     */
 
     public void removeShip(Ship ship) {
         this.ships.remove(ship);
