@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logbook.vessel_management_system.dto.CreateShipRequest;
 import com.logbook.vessel_management_system.dto.UpdateShipRequest;
 import com.logbook.vessel_management_system.entity.Owner;
-import com.logbook.vessel_management_system.entity.Ship;
-import com.logbook.vessel_management_system.entity.ShipCategoryDetails;
+// import com.logbook.vessel_management_system.entity.Ship;
+// import com.logbook.vessel_management_system.entity.ShipCategoryDetails;
 import com.logbook.vessel_management_system.repository.OwnerRepository;
 import com.logbook.vessel_management_system.repository.ShipRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +19,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
+// import java.util.HashSet;
+// import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
