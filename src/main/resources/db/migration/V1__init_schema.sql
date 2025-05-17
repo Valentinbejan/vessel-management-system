@@ -2,7 +2,7 @@
 -- Script to create the database schema for the Vessel Management System
 
 -- Drop existing tables if they exist (for clean development/testing)
--- WARNING: This will delete all data! Remove DROP statements for production
+-- WARNING: This will delete all data! 
 DROP TABLE IF EXISTS Ship_Ownership_Link_Table CASCADE;
 DROP TABLE IF EXISTS Category_Table CASCADE;
 DROP TABLE IF EXISTS Ships_Table CASCADE;

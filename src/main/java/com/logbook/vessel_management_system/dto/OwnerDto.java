@@ -6,6 +6,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.util.Set;
 
+/**
+ * DTO Pattern: Data Transfer Object for Owner entities.
+ * Acts as a contract for the API layer and isolates entity schema changes
+ * from affecting the API consumers.
+ */
+
 @Data
 @Schema(description = "Owner data transfer object containing owner information and associated ships")
 public class OwnerDto {

@@ -6,6 +6,12 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.util.Set;
 
+/**
+ * DTO Pattern: Specialized input DTO for ship updates.
+ * Carries only the fields that are allowed to be updated, preventing
+ * unintended modifications to immutable properties.
+ */
+
 @Data
 @Schema(description = "Request payload for updating an existing ship")
 public class UpdateShipRequest {
@@ -14,9 +20,6 @@ public class UpdateShipRequest {
     @Schema(description = "Name of the ship", example = "MV Symphony of the Seas - Updated", required = true)
     private String shipName;
 
-    // IMO number is generally not updatable
-    // private String imoNumber;
-
     @Schema(description = "Type/category of the ship", example = "Luxury Cruise Ship")
     private String shipType;
     
@@ -24,5 +27,5 @@ public class UpdateShipRequest {
     private Integer shipTonnage;
 
     @Schema(description = "Set of owner IDs to associate with this ship. If provided, replaces all existing ownership associations.", example = "[1, 3]")
-    private Set<Long> ownerIds; // Allow updating owners
+    private Set<Long> ownerIds; 
 }

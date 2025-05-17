@@ -7,25 +7,25 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Category_Table") // Matches your SQL table name
+@Table(name = "Category_Table") 
 @Getter
 @Setter
 @NoArgsConstructor
 public class ShipCategoryDetails {
 
-    @Id // This ID will be the same as the Ship's ID
-    @Column(name = "Ship_id") // Matches your SQL column name
-    private Long shipId; // This name makes sense as it's the ship's ID
+    @Id 
+    @Column(name = "Ship_id") 
+    private Long shipId; 
 
-    @Column(name = "Ship_type") // Matches your SQL column name
+    @Column(name = "Ship_type") 
     private String shipType;
 
-    @Column(name = "Ship_tonnage") // Matches your SQL column name
+    @Column(name = "Ship_tonnage") 
     private Integer shipTonnage;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId // Maps the shipId field to be both the PK and the FK to Ship
-    @JoinColumn(name = "Ship_id") // Specifies the FK column (same as PK here)
+    @MapsId 
+    @JoinColumn(name = "Ship_id") 
     private Ship ship;
 
     public ShipCategoryDetails(String shipType, Integer shipTonnage) {

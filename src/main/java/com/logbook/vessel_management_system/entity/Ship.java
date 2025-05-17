@@ -26,25 +26,25 @@ public class Ship {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id") // Matches your SQL column name for Ship's PK
-    private Long id; // Consider renaming to shipId for clarity in Java, but 'id' matches table
+    @Column(name = "Id") 
+    private Long id; 
 
-    @Column(name = "Ship_name", nullable = false) // Matches your SQL column name
+    @Column(name = "Ship_name", nullable = false) 
     private String shipName;
 
-    @Column(name = "Imo_number", nullable = false, unique = true) // Matches your SQL column name
+    @Column(name = "Imo_number", nullable = false, unique = true) 
     private String imoNumber;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
-        name = "Ship_Ownership_Link_Table", // Matches your join table name
-        joinColumns = @JoinColumn(name = "Ship_Id_FK"), // FK in join table referencing Ship
-        inverseJoinColumns = @JoinColumn(name = "Owner_Id_FK") // FK in join table referencing Owner
+        name = "Ship_Ownership_Link_Table", 
+        joinColumns = @JoinColumn(name = "Ship_Id_FK"), 
+        inverseJoinColumns = @JoinColumn(name = "Owner_Id_FK")
     )
     private Set<Owner> owners = new HashSet<>();
 
     @OneToOne(mappedBy = "ship", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-    private ShipCategoryDetails details; // Renamed from ShipDetails to match Category_Table intent
+    private ShipCategoryDetails details; 
 
     public Ship(String shipName, String imoNumber) {
         this.shipName = shipName;

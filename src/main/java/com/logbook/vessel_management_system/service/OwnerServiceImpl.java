@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet; // Added import
+import java.util.HashSet; 
 import java.util.List;
-import java.util.Set;     // Added import
+import java.util.Set;     
 import java.util.stream.Collectors;
 
 /**
@@ -76,19 +76,14 @@ public class OwnerServiceImpl implements OwnerService {
         Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Owner", "id", ownerId));
 
-        // Create a copy of the set to iterate over, to avoid ConcurrentModificationException
-        // if the underlying collection is modified by ship.removeOwner indirectly.
+        
         Set<Ship> shipsOwned = new HashSet<>(owner.getShips());
         for (Ship ship : shipsOwned) {
-            // Ensure Ship's removeOwner method correctly updates both sides of the relationship
-            // or at least prepares the Ship entity for saving.
+            
             ship.removeOwner(owner);
-            shipRepository.save(ship); // Persist changes to the Ship entity (updates join table)
+            shipRepository.save(ship); 
         }
-        // At this point, Hibernate's session should be aware that the links from Ship entities
-        // to this Owner are severed. The ON DELETE CASCADE at the DB level for Owner_Id_FK
-        // in Ship_Ownership_Link_Table will handle the physical deletion of link records
-        // when the owner record itself is deleted.
+        
 
         ownerRepository.delete(owner);
     }

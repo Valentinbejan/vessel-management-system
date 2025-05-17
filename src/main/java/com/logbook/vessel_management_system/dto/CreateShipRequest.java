@@ -8,6 +8,12 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.util.Set;
 
+/**
+ * DTO Pattern: Specialized input DTO for ship creation.
+ * Separates creation concerns from general data representation and provides
+ * specific validation rules for the creation operation.
+ */
+
 @Data
 @Schema(description = "Request payload for creating a new ship")
 public class CreateShipRequest {

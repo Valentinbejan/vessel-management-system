@@ -5,6 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import java.util.Set;
 
+/**
+ * DTO Pattern: Data Transfer Object specific to Ship entities.
+ * Separates the domain model from the presentation layer and provides a flat
+ * structure for API responses, hiding the complexity of entity relationships.
+ */
+
 @Data
 @Schema(description = "Ship data transfer object containing complete ship information")
 public class ShipDto {

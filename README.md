@@ -254,7 +254,7 @@ sudo kill -9 <PID>
 - Bidirectional mapping with helper methods for relationship management
 
 ### Business Logic
-- Ships must have unique IMO numbers (7 digits)
+- Ships must have unique IMO numbers
 - Deleting owners removes ownership links but preserves ships
 - Deleting ships removes all related data (details, ownership links)
 - Ships can have multiple owners, owners can own multiple ships
@@ -300,7 +300,7 @@ src/
 - JPA/Hibernate for data persistence
 - Spring Framework for dependency injection
 - Gradle build system
-- Integration tests validating system functionality
+- Integration and JUnit tests validating system functionality
 - API documentation with Swagger
 - SQL scripts for database setup and seeding
 

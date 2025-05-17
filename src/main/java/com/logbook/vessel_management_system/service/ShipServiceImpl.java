@@ -85,7 +85,7 @@ public class ShipServiceImpl implements ShipService {
         if (request.getOwnerIds() != null && !request.getOwnerIds().isEmpty()) {
             Set<Owner> owners = findAndValidateOwners(request.getOwnerIds());
             for (Owner owner : owners) {
-                ship.addOwner(owner);  // Use helper method to manage bidirectional relationship
+                ship.addOwner(owner); 
             }
         }
 

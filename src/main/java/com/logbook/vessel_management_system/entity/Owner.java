@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 
 @Entity
-@Table(name = "Owner_Table") // Matches your SQL table name
+@Table(name = "Owner_Table") 
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,10 +23,10 @@ public class Owner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Owner_Id") // Matches your SQL column name
+    @Column(name = "Owner_Id") 
     private Long ownerId;
 
-    @Column(name = "Owner_name", nullable = false, unique = true) // Matches your SQL column name
+    @Column(name = "Owner_name", nullable = false, unique = true) 
     private String ownerName;
 
     @ManyToMany(mappedBy = "owners", fetch = FetchType.LAZY)
@@ -43,7 +43,7 @@ public class Owner {
      */
 
 
-    // Helper methods (optional but good practice)
+    // Helper methods 
     public void addShip(Ship ship) {
         this.ships.add(ship);
         ship.getOwners().add(this);
