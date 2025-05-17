@@ -303,3 +303,7 @@ src/
 - Integration tests validating system functionality
 - API documentation with Swagger
 - SQL scripts for database setup and seeding
+
+## Demo Video
+
+https://github.com/user-attachments/assets/e7ec352c-0b61-4aab-a187-4b7bec3e5e12
